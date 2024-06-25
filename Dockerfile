@@ -6,7 +6,7 @@ WORKDIR /deployments
 
 # Create necessary directories and set permissions within the container
 RUN mkdir -p /deployments \
-    && chown -R 185:0 /deployments \
+    && chown -R 185:0 /deployments 
     
 
 # Copy application dependencies and Quarkus executable JAR into the container
