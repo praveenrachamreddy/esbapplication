@@ -1,14 +1,22 @@
-# Use a base image with a JDK suitable for running your Quarkus application
-FROM adoptopenjdk:17-jdk-hotspot
+# Use Red Hat's UBI base image with OpenJDK 11
+FROM registry.access.redhat.com/ubi8/openjdk-11:1.18
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /deployments
 
-# Copy the Quarkus application runner JAR into the container
-COPY target/quarkus-camel-poc-1.0.0-SNAPSHOT-runner.jar /app/quarkus-camel-poc-1.0.0-SNAPSHOT-runner.jar
+# Copy application dependencies and Quarkus executable JAR into the container
+COPY --chown=185 target/quarkus-app/lib /deployments/lib
+COPY --chown=185 target/quarkus-app/quarkus /deployments/quarkus
+COPY --chown=185 target/quarkus-app/app /deployments/app
+COPY --chown=185 target/quarkus-app/quarkus-run.jar /deployments/quarkus-run.jar
 
 # Expose the port that your Quarkus application listens on (if applicable)
 EXPOSE 8080
 
-# Specify the command to run your Quarkus application
-CMD ["java", "-jar", "quarkus-camel-poc-1.0.0-SNAPSHOT-runner"]
+# Set user permissions and environment variables
+USER 185
+ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+
+# Specify the entry point to run the application using the `run-java.sh` script
+ENTRYPOINT [ "/opt/jboss/container/java/run/run-java.sh" ]
