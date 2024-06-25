@@ -5,7 +5,7 @@ FROM registry.access.redhat.com/ubi8/openjdk-21:1.18
 WORKDIR /deployments
 
 # Add user 185 to the root group
-RUN usermod -aG root 185
+# RUN usermod -aG root 185
 
 # Copy application dependencies and Quarkus executable JAR into the container
 COPY --chown=185 target/quarkus-app/lib /deployments/lib
