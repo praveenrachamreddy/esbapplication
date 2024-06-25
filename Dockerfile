@@ -1,5 +1,5 @@
 # Use Red Hat's UBI base image with OpenJDK 11
-FROM registry.access.redhat.com/ubi8/openjdk-11:1.18
+FROM registry.access.redhat.com/ubi8/openjdk-21:1.18
 
 # Set the working directory inside the container
 WORKDIR /deployments
