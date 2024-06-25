@@ -1,6 +1,9 @@
 # Use Red Hat's UBI base image with OpenJDK 11
 FROM registry.access.redhat.com/ubi8/openjdk-21:1.18
 
+# Set user permissions and environment variables
+USER 185
+
 # Set the working directory inside the container
 WORKDIR /deployments
 
@@ -18,8 +21,7 @@ COPY --chown=185 target/quarkus-app/quarkus-run.jar /deployments/quarkus-run.jar
 # Expose the port that your Quarkus application listens on (if applicable)
 EXPOSE 8080
 
-# Set user permissions and environment variables
-USER 185
+
 ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
